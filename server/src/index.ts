@@ -1,11 +1,16 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import authRoutes from "./routes/auth";
-import { authMiddleware } from "./middleware/auth";
-import { AuthRequest } from "./types/express";
 
 dotenv.config();
+
+// MongoDB connection
+mongoose
+  .connect(process.env.MONGODB_URI!)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 const app = express();
 
@@ -16,13 +21,14 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 
-// Protected route example
-app.get("/api/teams", authMiddleware, (req: AuthRequest, res) => {
-  // Your team members data
-  const teamMembers = [
-    // Your team data here
-  ];
-  res.json({ teamMembers });
+// Test route
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to the API" });
+});
+
+// Basic test route
+app.get("/test", (req, res) => {
+  res.json({ message: "Test route working" });
 });
 
 const PORT = process.env.PORT || 3001;

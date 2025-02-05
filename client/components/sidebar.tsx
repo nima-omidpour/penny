@@ -1,53 +1,77 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Home, Users, LayoutDashboard, FileText, Settings } from "lucide-react"
-import { cn } from "@/lib/utils"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  HomeIcon,
+  UsersIcon,
+  LayoutDashboardIcon,
+  FileTextIcon,
+  SettingsIcon,
+} from "lucide-react";
 
-const navigation = [
-  { name: "Home", href: "/", icon: Home },
-  { name: "Teams", href: "/teams", icon: Users },
-  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Reports", href: "/reports", icon: FileText },
-  { name: "Settings", href: "/settings", icon: Settings },
-]
+const sidebarNavItems = [
+  {
+    title: "Home",
+    href: "/",
+    icon: HomeIcon,
+  },
+  {
+    title: "Teams",
+    href: "/teams",
+    icon: UsersIcon,
+  },
+  {
+    title: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboardIcon,
+  },
+  {
+    title: "Reports",
+    href: "/reports",
+    icon: FileTextIcon,
+  },
+  {
+    title: "Settings",
+    href: "/settings",
+    icon: SettingsIcon,
+  },
+];
 
 export function Sidebar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   return (
-    <div className="flex h-full w-56 flex-col bg-zinc-900">
-      <div className="flex h-16 items-center gap-2 px-4">
-        <div className="flex items-center gap-2">
-          <img src={`${process.env.NEXT_PUBLIC_VERCEL_URL}/penny-logo.svg`} alt="Penny" className="h-8 w-8" />
-          <span className="text-xl font-semibold text-white">penny</span>
-        </div>
+    <div className="fixed left-0 top-0 h-screen border-r bg-[#111111] lg:block lg:w-60">
+      <div className="flex h-16 items-center px-4">
+        <Link href="/" className="flex items-center space-x-2">
+          <img src="/penny.svg" alt="Penny" className="h-6 w-6" />
+          <span className="text-lg font-semibold text-white">penny</span>
+        </Link>
       </div>
-      <nav className="flex-1 space-y-1 px-2 py-4">
-        {navigation.map((item) => {
-          const isActive = pathname === item.href
-          return (
-            <Link
-              key={item.name}
-              href={item.href}
+      <ScrollArea className="h-[calc(100vh-4rem)]">
+        <div className="flex flex-col gap-1 p-4">
+          {sidebarNavItems.map((item) => (
+            <Button
+              key={item.href}
+              variant="ghost"
+              asChild
               className={cn(
-                "group flex items-center rounded-md px-2 py-2 text-sm font-medium",
-                isActive ? "bg-zinc-800 text-white" : "text-zinc-400 hover:bg-zinc-800 hover:text-white",
+                "w-full justify-start gap-2 text-zinc-400 hover:text-white",
+                pathname === item.href && "bg-zinc-800 text-white"
               )}
             >
-              <item.icon
-                className={cn(
-                  "mr-3 h-5 w-5 flex-shrink-0",
-                  isActive ? "text-white" : "text-zinc-400 group-hover:text-white",
-                )}
-              />
-              {item.name}
-            </Link>
-          )
-        })}
-      </nav>
+              <Link href={item.href}>
+                <item.icon className="h-4 w-4" />
+                {item.title}
+              </Link>
+            </Button>
+          ))}
+        </div>
+      </ScrollArea>
     </div>
-  )
+  );
 }
-

@@ -1,37 +1,44 @@
-import { Inter } from "next/font/google"
-import { Sidebar } from "@/components/sidebar"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Header } from "@/components/header"
-import type React from "react" // Added import for React
+import { Inter } from "next/font/google";
+import { Providers } from "@/components/providers";
+import { Navbar } from "@/components/navbar";
+import { Sidebar } from "@/components/sidebar";
+import { ThemeProvider } from "@/components/theme-provider";
+import "./globals.css";
 
-import "./globals.css"
-
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Penny - Smart Financial Management",
   description: "The smartest way to manage your finances",
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider>
-          <div className="flex h-screen">
-            <Sidebar />
-            <div className="flex flex-1 flex-col">
-              <Header />
-              <main className="flex-1 overflow-auto">{children}</main>
+        <Providers>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="relative min-h-screen">
+              <Sidebar />
+              <div className="pl-60">
+                <Navbar />
+                <main className="space-y-4 p-8 pt-6">
+                  {children}
+                </main>
+              </div>
             </div>
-          </div>
-        </ThemeProvider>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
-  )
+  );
 }
-
