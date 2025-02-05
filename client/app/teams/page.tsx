@@ -1,35 +1,52 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { TeamMemberCard } from "@/components/team-member-card";
+
+const teamMembers = [
+  {
+    id: 1,
+    name: "David Hasse",
+    role: "Backend Developer",
+    image:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/2.PNG-oT5ZkB7v03SrFG0sc0xoAF9ONU688f.png",
+    salary: "100,000",
+    address: "0x319",
+  },
+  {
+    id: 2,
+    name: "David Hasse",
+    role: "Backend Developer",
+    image:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/2.PNG-oT5ZkB7v03SrFG0sc0xoAF9ONU688f.png",
+    salary: "100,000",
+    address: "0x319",
+  },
+  {
+    id: 3,
+    name: "David Hasse",
+    role: "Backend Developer",
+    image:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/2.PNG-oT5ZkB7v03SrFG0sc0xoAF9ONU688f.png",
+    salary: "100,000",
+    address: "0x319",
+  },
+  {
+    id: 4,
+    name: "David Hasse",
+    role: "Backend Developer",
+    image:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/2.PNG-oT5ZkB7v03SrFG0sc0xoAF9ONU688f.png",
+    salary: "100,000",
+    address: "0x319",
+  },
+];
 
 export default function Teams() {
   return (
-    <div className="p-8 space-y-8">
-      <h1 className="text-3xl font-bold text-white">Teams</h1>
-
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card className="bg-zinc-900/50 border-zinc-800">
-          <CardHeader>
-            <CardTitle>Team Members</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {["Alice", "Bob", "Charlie"].map((name) => (
-                <div key={name} className="flex items-center gap-4">
-                  <Avatar>
-                    <AvatarImage src={`https://avatar.vercel.sh/${name}.png`} />
-                    <AvatarFallback>{name[0]}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <div className="text-sm font-medium text-white">{name}</div>
-                    <div className="text-xs text-zinc-400">Team Member</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+    <div className="p-6">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {teamMembers.map((member) => (
+          <TeamMemberCard key={member.id} {...member} />
+        ))}
       </div>
     </div>
-  )
+  );
 }
-
