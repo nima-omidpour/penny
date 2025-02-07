@@ -4,17 +4,21 @@ import { Button } from "@/components/ui/button";
 import { LogIn, LogOut } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import { useAppDispatch } from "@/store/hooks";
-import { clearAuth } from "@/store/features/authSlice";
+import { clearAuth, setPrivateKey } from "@/store/features/authSlice";
 import { WalletDialog } from "./wallet-dialog";
+import { useRouter } from "next/navigation";
 
 export function WalletButton() {
   const { isLoggedIn, walletAddress } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("walletAddress");
+    localStorage.removeItem("encryptedPrivateKey");
     dispatch(clearAuth());
+    router.push("/");
   };
 
   if (isLoggedIn && walletAddress) {

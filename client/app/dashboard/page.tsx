@@ -1,16 +1,18 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { NetWorthChart } from "@/components/dashboard/net-worth-chart"
-import { AssetsLiabilitiesCharts } from "@/components/dashboard/assets-liabilities-charts"
-import { AssetsList } from "@/components/dashboard/assets-list"
-import { Button } from "@/components/ui/button"
-import { ChevronDown } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { NetWorthChart } from "@/components/dashboard/net-worth-chart";
+import { AssetsLiabilitiesCharts } from "@/components/dashboard/assets-liabilities-charts";
+import { AssetsList } from "@/components/dashboard/assets-list";
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
 
 export default function Dashboard() {
   return (
     <div className="p-6 space-y-6">
       <Card className="bg-zinc-900/50 border-zinc-800">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium text-zinc-400">Net worth</CardTitle>
+          <CardTitle className="text-sm font-medium text-zinc-400">
+            Net worth
+          </CardTitle>
           <Button variant="outline" size="sm" className="h-8">
             1M
             <ChevronDown className="ml-2 h-4 w-4" />
@@ -46,6 +48,5 @@ export default function Dashboard() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
-

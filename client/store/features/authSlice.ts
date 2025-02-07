@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface AuthState {
   isLoggedIn: boolean;
   walletAddress: string | null;
+  hasPrivateKey: boolean;
 }
 
 const initialState: AuthState = {
   isLoggedIn: false,
   walletAddress: null,
+  hasPrivateKey: false,
 };
 
 export const authSlice = createSlice({
@@ -30,8 +32,15 @@ export const authSlice = createSlice({
         state.walletAddress = address;
       }
     },
+    setPrivateKey: (state) => {
+      state.hasPrivateKey = true;
+    },
+    checkPrivateKey: (state) => {
+      state.hasPrivateKey = !!localStorage.getItem("encryptedPrivateKey");
+    },
   },
 });
 
-export const { setAuth, clearAuth, initAuth } = authSlice.actions;
+export const { setAuth, clearAuth, initAuth, setPrivateKey, checkPrivateKey } =
+  authSlice.actions;
 export default authSlice.reducer;

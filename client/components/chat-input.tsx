@@ -4,10 +4,14 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowUp } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/store/hooks";
 
 export function ChatInput() {
   const [message, setMessage] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const router = useRouter();
+  const { hasPrivateKey } = useAppSelector((state) => state.auth);
 
   // Auto-resize textarea
   useEffect(() => {
@@ -20,6 +24,13 @@ export function ChatInput() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Check if private key exists
+    if (!hasPrivateKey) {
+      router.push("/private-key");
+      return;
+    }
+
     if (!message.trim()) return;
     console.log("Sending message:", message);
     setMessage("");
