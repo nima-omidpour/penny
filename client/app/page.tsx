@@ -51,10 +51,6 @@ export default function Home() {
               </CardContent>
             </Card>
           </div>
-
-          <Button variant="secondary" size="sm">
-            Try a example
-          </Button>
         </div>
       </div>
       <div className="sticky bottom-0 bg-gradient-to-t from-background to-background/80 backdrop-blur-xl border-zinc-800">

@@ -12,6 +12,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@coinbase/agentkit": "^0.1.1",
+    "@coinbase/agentkit-langchain": "^0.1.0",
+    "@langchain/langgraph": "^0.2.44",
+    "@langchain/openai": "^0.4.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "ethers": "^6.13.5",
