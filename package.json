@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "sonner": "^1.7.4"
   },
   "devDependencies": {
     "cross-env": "^7.0.3"

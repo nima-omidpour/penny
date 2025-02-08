@@ -4,6 +4,7 @@ import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,13 +32,12 @@ export default function RootLayout({
               <Sidebar />
               <div className="pl-60">
                 <Navbar />
-                <main className="space-y-4 p-8 pt-6">
-                  {children}
-                </main>
+                <main className="space-y-4 p-8 pt-6">{children}</main>
               </div>
             </div>
           </ThemeProvider>
         </Providers>
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );

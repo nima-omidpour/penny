@@ -5,6 +5,8 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { TeamMember } from "@/types/team";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface AddTeamMemberFormProps {
   onSubmit: (member: Omit<TeamMember, "id">) => void;
@@ -18,17 +20,59 @@ export function AddTeamMemberForm({ onSubmit }: AddTeamMemberFormProps) {
     salary: "",
     address: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
-    setFormData({
-      name: "",
-      role: "",
-      image: "",
-      salary: "",
-      address: "",
-    });
+    setIsSubmitting(true);
+
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const response = await fetch("http://localhost:3001/api/team", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add team member");
+      }
+
+      const data = await response.json();
+
+      // Call the onSubmit prop if needed
+      onSubmit(formData);
+
+      // Show success toast with Sonner
+      toast.success("Team member added successfully!");
+
+      // Reset form
+      setFormData({
+        name: "",
+        role: "",
+        image: "",
+        salary: "",
+        address: "",
+      });
+
+      // Redirect or refresh the page
+      router.refresh();
+    } catch (error) {
+      console.error("Error adding team member:", error);
+      // Show error toast with Sonner
+      toast.error("Failed to add team member");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -80,7 +124,9 @@ export function AddTeamMemberForm({ onSubmit }: AddTeamMemberFormProps) {
           required
         />
       </div>
-      <Button type="submit">Add Team Member</Button>
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Adding..." : "Add Team Member"}
+      </Button>
     </form>
   );
 }
