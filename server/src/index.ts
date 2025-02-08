@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/auth";
 // import agentRoutes from "./routes/agent";
 import * as dotenv from "dotenv";
+import teamRoutes from "./routes/team";
 dotenv.config();
 
 // MongoDB connection
@@ -21,6 +22,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 // app.use("/api/agent", agentRoutes);
+app.use("/api/team", teamRoutes);
 
 // Test route
 app.get("/", (req, res) => {
