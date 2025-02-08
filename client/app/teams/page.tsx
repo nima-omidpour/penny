@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Users } from "lucide-react";
 
 interface TeamMember {
   id: string;
@@ -54,11 +55,50 @@ export default function Teams() {
   }, []);
 
   if (loading) {
-    return <div className="p-6">Loading team members...</div>;
+    return (
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Team Members</h1>
+          <Button disabled>Add Team Member</Button>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {[...Array(4)].map((_, index) => (
+            <div key={index} className="animate-pulse">
+              <div className="bg-gray-200 h-48 rounded-lg" />
+              <div className="p-4">
+                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
+                <div className="h-4 bg-gray-200 rounded w-1/2 mb-2" />
+                <div className="h-4 bg-gray-200 rounded w-1/4" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   if (error) {
     return <div className="p-6 text-red-500">{error}</div>;
+  }
+
+  if (teamMembers.length === 0 && !loading) {
+    return (
+      <div className="p-6 flex flex-col items-center justify-center text-center">
+        <div className="max-w-md">
+          <div className="animate-bounce">
+            <Users className="w-16 h-16 mx-auto mb-6 text-gray-400" />
+          </div>
+          <h2 className="text-2xl font-bold mb-2">No Team Members Found</h2>
+          <p className="text-gray-600 mb-6">
+            It looks like you haven't added any team members yet. Get started by
+            adding your first team member!
+          </p>
+          <Button onClick={() => router.push("/teams/add")}>
+            Add Team Member
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   return (
