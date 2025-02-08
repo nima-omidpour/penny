@@ -6,7 +6,6 @@ interface TeamMemberCardProps {
   role: string;
   image: string;
   salary: string;
-  address: string;
 }
 
 export function TeamMemberCard({
@@ -14,35 +13,19 @@ export function TeamMemberCard({
   role,
   image,
   salary,
-  address,
 }: TeamMemberCardProps) {
   return (
-    <Card className="bg-zinc-900/50 border-zinc-800 p-6">
-      <div className="flex flex-col items-center text-center">
-        <div className="relative mb-3">
-          <img
-            src={image || "/placeholder.svg"}
-            alt={name}
-            className="w-20 h-20 rounded-full"
-          />
-        </div>
-        <h3 className="text-lg font-semibold text-white mb-1">{name}</h3>
-        <p className="text-sm text-zinc-400 mb-4">{role}</p>
-        <div className="w-full space-y-2">
-          <div className="text-sm text-zinc-400">Salary: ${salary}</div>
-          <div className="flex items-center justify-center gap-2 text-sm text-zinc-400">
-            <span>address: {address}</span>
-            <button
-              className="hover:text-white"
-              onClick={() => {
-                navigator.clipboard.writeText(address);
-              }}
-            >
-              <Copy className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
+    <div className="border rounded-lg overflow-hidden shadow-sm">
+      <img
+        src={image || "/default-profile.png"}
+        alt={name}
+        className="w-full h-48 object-cover"
+      />
+      <div className="p-4">
+        <h3 className="font-semibold text-lg">{name}</h3>
+        <p className="text-sm text-gray-600">{role}</p>
+        <p className="text-sm mt-2">Salary: ${salary}</p>
       </div>
-    </Card>
+    </div>
   );
 }

@@ -1,49 +1,34 @@
-import { API_CONFIG } from "../config";
-import { APIResponse, TeamMember } from "../types";
+import { NextResponse } from "next/server";
+import axios from "axios";
 
-export const teamsApi = {
-  getTeamMembers: async (): Promise<APIResponse<TeamMember[]>> => {
-    const response = await fetch(
-      `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TEAMS}`
-    );
-    return response.json();
-  },
+export async function GET(request: Request) {
+  try {
+    // Get JWT token from headers
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return NextResponse.json(
+        { error: "Authorization token missing" },
+        { status: 401 }
+      );
+    }
 
-  addTeamMember: async (memberData: Omit<TeamMember, "id">): Promise<APIResponse<TeamMember>> => {
-    const response = await fetch(
-      `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TEAMS}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(memberData),
-      }
-    );
-    return response.json();
-  },
+    const token = authHeader.split(" ")[1];
 
-  updateTeamMember: async (id: number, memberData: Partial<TeamMember>): Promise<APIResponse<TeamMember>> => {
-    const response = await fetch(
-      `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TEAMS}/${id}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(memberData),
-      }
-    );
-    return response.json();
-  },
+    // Fetch team members from your backend API at port 3001
+    const response = await axios.get("http://localhost:3001/api/team", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  deleteTeamMember: async (id: number): Promise<APIResponse<void>> => {
-    const response = await fetch(
-      `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TEAMS}/${id}`,
-      {
-        method: 'DELETE',
-      }
-    );
-    return response.json();
-  },
-};
+    return NextResponse.json(response.data);
+  } catch (error: any) {
+    console.error("Error fetching team members:", error);
+
+    const status = error.response?.status || 500;
+    const message =
+      error.response?.data?.error || "Failed to fetch team members";
+
+    return NextResponse.json({ error: message }, { status: status });
+  }
+}
