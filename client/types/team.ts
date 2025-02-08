@@ -1,9 +1,3 @@
-export interface APIResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
-
 export interface TeamMember {
   id: number;
   name: string;
