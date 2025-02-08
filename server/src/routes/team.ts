@@ -36,7 +36,10 @@ router.post("/", authenticate, async (req, res) => {
 router.get("/", authenticate, async (req, res) => {
   try {
     const userId = req.user._id;
+
+    // Fetch team members created by the user
     const teamMembers = await TeamMember.find({ createdBy: userId });
+
     res.json(teamMembers);
   } catch (error) {
     console.error("Error fetching team members:", error);

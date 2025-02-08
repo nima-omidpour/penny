@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Users } from "lucide-react";
+import { toast } from "sonner";
 
 interface TeamMember {
   id: string;
@@ -33,7 +34,6 @@ export default function Teams() {
         const response = await fetch("http://localhost:3001/api/team", {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
           },
         });
 
@@ -42,6 +42,7 @@ export default function Teams() {
         }
 
         const data = await response.json();
+        console.log("Team members data:", data); // Debug the data
         setTeamMembers(data);
       } catch (error) {
         console.error("Error fetching team members:", error);
@@ -53,6 +54,41 @@ export default function Teams() {
 
     fetchTeamMembers();
   }, []);
+
+  const handleDelete = async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const response = await fetch(`http://localhost:3001/api/team/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete team member");
+      }
+
+      // Remove the deleted team member from the state
+      setTeamMembers((prev) => prev.filter((member) => member._id !== id));
+
+      // Show success toast
+      toast.success("Team member deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting team member:", error);
+      toast.error("Failed to delete team member");
+    }
+  };
+
+  const handleEdit = (id: string) => {
+    // Navigate to the edit page or open a modal
+    router.push(`/teams/edit/${id}`);
+  };
 
   if (loading) {
     return (
@@ -110,16 +146,21 @@ export default function Teams() {
         </Button>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {teamMembers.map((member) => (
-          <TeamMemberCard
-            key={member.id}
-            name={member.name}
-            role={member.role}
-            image={member.profileImage}
-            salary={member.salary.toLocaleString()}
-            address="" // Remove if not needed
-          />
-        ))}
+        {teamMembers.map((member) => {
+          console.log("Team member ID:", member.id); // Debug the ID
+          return (
+            <TeamMemberCard
+              key={member._id} // Use _id as the key
+              id={member._id} // Pass _id as the id prop
+              name={member.name}
+              role={member.role}
+              image={member.profileImage}
+              salary={member.salary.toLocaleString()}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+            />
+          );
+        })}
       </div>
     </div>
   );
